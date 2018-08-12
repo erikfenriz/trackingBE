@@ -1,0 +1,314 @@
+{
+  "swagger": "2.0",
+  "basePath": "/",
+  "info": {
+    "version": "0.0.2",
+    "title": "Sports day time tracker API"
+  },
+  "schemes": [
+    "http"
+  ],
+  "paths": {
+    "/readers": {
+      "get": {
+        "tags": [
+          "reader"
+        ], 
+        "summary": "Get all time readers",
+        "operationId": "getAllReaders",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "success",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Reader"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/readers/{id}": {
+      "get": {
+        "tags": [
+          "reader"
+        ], 
+        "summary": "Get time reader by ID",
+        "operationId": "getReader",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "description": "Reader ID",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "success",
+            "schema": {
+              "$ref": "#/definitions/Reader"
+            }
+          },
+          "404": {
+            "description": "Reader not found"
+          }
+        }
+      }
+    },
+    "/athletes": {
+      "get": {
+        "tags": [
+          "athlete"
+        ], 
+        "summary": "Get all athletes",
+        "operationId": "getAllAthletes",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "success",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Athlete"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/athletes/{id}": {
+      "get": {
+        "tags": [
+          "athlete"
+        ], 
+        "summary": "Get athlete by ID",
+        "operationId": "getAthlete",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "description": "Athlete ID",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "success",
+            "schema": {
+              "$ref": "#/definitions/Athlete"
+            }
+          },
+          "404": {
+            "description": "Athlete not found"
+          }
+        }
+      }
+    },
+    "/captures": {
+      "get": {
+        "tags": [
+          "capture"
+        ], 
+        "summary": "Get all time captures",
+        "operationId": "getAllCaptures",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "timestamp",
+            "in": "query",
+            "description": "Captured since timestamp (unix)",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "success",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Capture"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid timestamp"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "capture"
+        ], 
+        "summary": "Add new time capture",
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "capture data",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/CaptureRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "success",
+            "schema": {
+              "$ref": "#/definitions/Capture"
+            }
+          },
+          "400": {
+            "description": "Invalid data"
+          },
+          "422": {
+            "description": "Capture for Athlete and Reader already exists"
+          }
+        },
+        "security": [
+          {
+            "type": "basic"
+          }
+        ]
+      }
+    },
+    "/captures/{id}": {
+      "get": {
+        "tags": [
+          "capture"
+        ], 
+        "summary": "Get capture by ID",
+        "operationId": "getCapture",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "description": "Capture ID",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "success",
+            "schema": {
+              "$ref": "#/definitions/Capture"
+            }
+          },
+          "404": {
+            "description": "Capture not found"
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "Reader": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "position": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "name": {
+          "type": "string"
+        },
+        "event_id": {
+          "type": "integer",
+          "format": "int64"
+        }
+      }
+    },
+    "Athlete": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "number": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "name": {
+          "type": "string"
+        }
+      }
+    },
+    "Capture": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "athlete": {
+          "$ref": "#/definitions/Athlete"
+        },
+        "reader_id": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "timestamp": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "captured": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "CaptureRequest": {
+      "type": "object",
+      "properties": {
+        "athlete_id": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "reader_id": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "timestamp": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    }
+  }
+}

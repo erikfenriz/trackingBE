@@ -1,0 +1,29 @@
+from setuptools import setup
+
+setup(
+    name='tracker',
+    version='0.0.2',
+    py_modules=['tracker'],
+    include_package_data=True,
+    install_requires=[
+        'flask-cors==3.0.3',
+        'flask-sqlalchemy==2.2',
+        'flask-basicauth==0.2.0',
+        'flask-socketio==2.9.2',
+        'flask==0.12.2',
+        'gevent==1.2.2',
+        'gevent-websocket==0.10.1',
+        'requests==2.18.4',
+        'marshmallow==3.0.0b3',
+        'names==0.3.0',
+        'requests==2.18.4',
+        'python-dateutil==2.6.1',
+    ],
+    setup_requires=[
+        'pytest-runner',
+    ],
+    tests_require=[
+        'pytest',
+        'pytest-mock'
+    ],
+)
